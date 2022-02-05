@@ -1,0 +1,13 @@
+.vagrant/machines/ubuntu2004/hyperv/action_configure
+.vagrant/machines/ubuntu2004/hyperv/action_set_name
+.vagrant/machines/ubuntu2004/hyperv/box_meta
+.vagrant/machines/ubuntu2004/hyperv/creator_uid
+.vagrant/machines/ubuntu2004/hyperv/id
+.vagrant/machines/ubuntu2004/hyperv/index_uuid
+.vagrant/machines/ubuntu2004/hyperv/vagrant_cwd
+.vagrant/machines/ubuntu2004/hyperv/Virtual Hard Disks/generic-ubuntu2004-hyperv.vhdx
+.vagrant/machines/ubuntu2004/hyperv/Virtual Machines/0122B577-CFE2-47FE-A815-55CA0568C1E9.vmcx
+.vagrant/machines/ubuntu2004/hyperv/Virtual Machines/0122B577-CFE2-47FE-A815-55CA0568C1E9.vmgs
+.vagrant/machines/ubuntu2004/hyperv/Virtual Machines/0122B577-CFE2-47FE-A815-55CA0568C1E9.VMRS
+.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+.vagrant/rgloader/loader.rb

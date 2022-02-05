@@ -1,0 +1,2 @@
+﻿param($VirtualMachine, $Username = "vagrant", $Password = "vagrant", $IPAddress, $PrefixLength = "24", $DefaultGateway, $DNSServer)
+Get-VMNetworkAdapter -VMName $VirtualMachine |  Set-VMNetworkAdapter -IovQueuePairsRequested 1 -IovInterruptModeration Default -IovWeight 100
