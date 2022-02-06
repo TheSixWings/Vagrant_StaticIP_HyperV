@@ -16,14 +16,14 @@ If ($NATIP -in (Get-NetIPAddress | Select-Object -ExpandProperty IPAddress) -eq 
     New-NetIPAddress -IPAddress $NATIP -PrefixLength $PrefixLength -InterfaceAlias "vEthernet (NATSwitch)"
 }
 else {
-    Write-Host '"' $NATIP '" for static IP configuration already registered; skipping'
+    Write-Host '"'$NATIP'" for static IP configuration already registered; skipping'
 }
 If ($NATIPPrefix -in (Get-NetNAT | Select-Object -ExpandProperty InternalIPInterfaceAddressPrefix) -eq $FALSE) {
     Write-Host 'Registering new NAT adapter for' $NATIPPrefix ' on Windows Hyper-V host...'
     New-NetNAT -Name "NATNetwork" -InternalIPInterfaceAddressPrefix $NATIPPrefix
 }
 else {
-    Write-Host '"' $NATIPPrefix '" for static IP configuration already registered; skipping'
+    Write-Host '"'$NATIPPrefix'" for static IP configuration already registered; skipping'
 }
 Get-VM $VirtualMachine | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName "NATSwitch"
 Write-Host 'Connected to NATSwitch'
