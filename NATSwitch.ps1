@@ -1,5 +1,6 @@
 #Use NATSwitch to set static IP
 #https://superuser.com/questions/1354658/hyperv-static-ip-with-vagrant/1379582#1379582
+#If exist "NATNetwork" in Get-NetNAT, will be removed
 param($VirtualMachine, $NATIP='10.0.0.1', $PrefixLength=24)
 $NATIPPrefix=$NATIP.SubString(0,$NATIP.Length - 1) + '0/' + $PrefixLength
 If ("NATSwitch" -in (Get-VMSwitch | Select-Object -ExpandProperty Name) -eq $FALSE) {
@@ -19,7 +20,9 @@ else {
     Write-Host '"'$NATIP'" for static IP configuration already registered; skipping'
 }
 If ($NATIPPrefix -in (Get-NetNAT | Select-Object -ExpandProperty InternalIPInterfaceAddressPrefix) -eq $FALSE) {
-    Write-Host 'Registering new NAT adapter for' $NATIPPrefix ' on Windows Hyper-V host...'
+    
+    Write-Host 'Registering new NAT adapter for'$NATIPPrefix'on Windows Hyper-V host...' 
+    Remove-NetNAT -Name "NATNetwork"
     New-NetNAT -Name "NATNetwork" -InternalIPInterfaceAddressPrefix $NATIPPrefix
 }
 else {
