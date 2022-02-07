@@ -1,6 +1,6 @@
 HOSTNAME = "server001"
 SWITCH = "vSwitch"
-NATIP = "192.168.30.1"
+StaticIP = "192.168.30.3"
 Vagrant.configure("2") do |config|
   config.vm.define "ubuntu2004" do |u|
     u.vm.box = "generic/ubuntu2004"
@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
       h.linked_clone = true
     end
     u.vm.hostname = HOSTNAME
-    #u.vm.provision "shell", path: "SetStaticIP.sh"
+    u.vm.provision "shell", path: "SetStaticIP.sh -i " + StaticIP
     u.vm.provision "shell", inline: "echo Reboot VM to apply Static IP"
     u.vm.provision "shell", reboot: true
     u.vm.provision "ansible" do |a|
@@ -27,12 +27,7 @@ Vagrant.configure("2") do |config|
     t.info = "Trigger Fired: Before-StartInstance"
     t.only_on = "ubuntu2004"
     t.run = {inline: "Powershell.exe ./EnableSRIOV.ps1 -VirtualMachine " + HOSTNAME +
-                     "; Powershell.exe ./NATSwitch.ps1 -VirtualMachine " + HOSTNAME + " -NATIP " + NATIP}
-  end
-  config.trigger.after :"Vagrant::Action::Builtin::SetHostname", type: :action do |t|
-    t.info = "Trigger Fired: After-SetHostname"
-    t.only_on = "ubuntu2004"
-    t.run_remote = {path: "SetStaticIP.sh"}
+                     "; Powershell.exe ./NATSwitch.ps1 -VirtualMachine " + HOSTNAME + " -IP " + StaticIP}
   end
   config.trigger.after :up do |t|
     t.info = "Trigger Fired: After-Up"
