@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
       h.linked_clone = true
     end
     u.vm.hostname = HOSTNAME
-    u.vm.provision "shell", path: "SetStaticIP.sh -i " + StaticIP
+    u.vm.provision "shell", path: "SetStaticIP.sh", args: "-i " + StaticIP
     u.vm.provision "shell", inline: "echo Reboot VM to apply Static IP"
     u.vm.provision "shell", reboot: true
     u.vm.provision "ansible" do |a|
