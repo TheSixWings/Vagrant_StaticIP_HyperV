@@ -1,7 +1,13 @@
-HOSTNAME = "server001"
+#For running Vagrant in WSL2 with Hyper-V as the provider
+#Vagrantfile that supports to setup a static IP for Hyper-V VM.
+#At boot, change to NATSwitch, configure IP within the guest OS, restart and then change back to Virtual Switch.
+
+#define
+HOSTNAME = "Server01-WIN" #Windows: -WIN /Linux: -LNX
 SWITCH = "vSwitch"
-StaticIP = "192.168.30.3"
+StaticIP = "192.168.30.4"
 BOX = "gusztavvargadr/windows-10"
+
 Vagrant.configure("2") do |config|
   config.vm.define HOSTNAME do |u|
     u.vm.box = BOX
@@ -10,7 +16,7 @@ Vagrant.configure("2") do |config|
     u.vm.synced_folder ".", "/vagrant", disabled: true
     u.vm.provider "hyperv" do |h|
       h.cpus = 2
-      h.memory = 2048
+      h.memory = 4096
       h.vmname = HOSTNAME
       h.enable_virtualization_extensions = true
       h.linked_clone = true
@@ -20,29 +26,39 @@ Vagrant.configure("2") do |config|
     u.vm.provision "shell", reboot: true
     u.vm.provision "ansible" do |a|
       a.verbose = "v"
-      a.playbook = "playbook.yaml"
+      a.playbook = "playbook.yml"
     end
   end
+  #HyperV Triggers
   config.trigger.before :'VagrantPlugins::HyperV::Action::StartInstance', type: :action do |t|
     t.info = "Trigger Fired: Before-StartInstance"
-    t.only_on = HOSTNAME
-    t.run = {inline: "Powershell.exe ./EnableSRIOV.ps1 -VirtualMachine " + HOSTNAME +
-                     "; Powershell.exe ./NATSwitch.ps1 -VirtualMachine " + HOSTNAME + " -IP " + StaticIP}
+    t.run = {inline: "Powershell.exe ./EnableSRIOV.ps1 -VM " + HOSTNAME +
+                     "; Powershell.exe ./NATSwitch.ps1 -VM " + HOSTNAME + " -IP " + StaticIP}
+  end
+  config.trigger.after :up, :reload, :provision do |t|
+    t.info = "Trigger Fired: After-Up,Reload"
+    t.run = {inline: "Powershell.exe Get-VM " + HOSTNAME + "| Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName " + SWITCH}
+  end
+  #Ansible Triggers
+  config.trigger.before :up, :reload, :provision do |t|
+    t.info = "Trigger Fired: Before-Up,Reload,Provision"
+    t.run = {inline: "Powershell.exe ./PreparePlaybook.ps1 -VM " + HOSTNAME}
+  end
+  #Linux Triggers
+  config.trigger.before :reload, :halt, :provision do |t|
+    t.info = "Trigger Fired: Before-Reload,Halt"
+    t.only_on = /-LNX$/
+    t.run_remote = {path: "SetStaticIP.sh", args: "-i " + StaticIP}
   end
   config.trigger.after :'Vagrant::Action::Builtin::SetHostname', type: :action do |t|
     t.info = "Trigger Fired: After-SetHostname"
-    t.only_on = HOSTNAME
+    t.only_on = /-LNX$/
     t.run_remote = {path: "SetStaticIP.sh", args: "-i " + StaticIP}
   end
-  config.trigger.after :up, :reload do |t|
-    t.info = "Trigger Fired: After-Up,Reload"
-    t.only_on = HOSTNAME
-    t.run = {inline: "Powershell.exe Get-VM " + HOSTNAME + "| Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName " + SWITCH}
+  #Windows Triggers
+  config.trigger.after :'VagrantPlugins::HyperV::Action::WaitForIPAddress', type: :action do |t|
+    t.info = "Trigger Fired: After-WaitForIPAddress"
+    t.only_on = /-WIN$/
+    t.run = {inline: "Powershell.exe ./SetStaticIP.ps1 -VM " + HOSTNAME + " -IP " + StaticIP}
   end
-  config.trigger.before :reload, :halt, :provision do |t|
-    t.info = "Trigger Fired: Before-Reload,Halt"
-    t.only_on = HOSTNAME
-    t.run_remote = {path: "SetStaticIP.sh", args: "-i " + StaticIP}
-  end
-  
 end
