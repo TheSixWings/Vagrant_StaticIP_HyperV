@@ -4,9 +4,9 @@
 
 #define
 HOSTNAME = "Server01-WIN" #Windows: -WIN /Linux: -LNX
-SWITCH = "vSwitch"
 StaticIP = "192.168.30.4"
 BOX = "gusztavvargadr/windows-10"
+SWITCH = "vSwitch"
 
 Vagrant.configure("2") do |config|
   config.vm.define HOSTNAME do |u|
