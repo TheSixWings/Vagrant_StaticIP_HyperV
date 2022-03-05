@@ -1,14 +1,14 @@
 #Use NATSwitch to set static IP
 #https://superuser.com/questions/1354658/hyperv-static-ip-with-vagrant/1379582#1379582
 #If exist "NATNetwork" in Get-NetNAT, will be removed.
-param($VirtualMachine, $IP='10.0.0.1', $PrefixLength=24)
+param($VM, $IP='10.0.0.1', $PrefixLength=24)
 $ExtractIP=$IP.Split(".")[0] + "." + $IP.Split(".")[1] + "." + $IP.Split(".")[2]
 $NATIPPrefix=$ExtractIP + '.0/' + $PrefixLength
 $NATIP=$ExtractIP + '.1'
 If ("NATSwitch" -in (Get-VMSwitch | Select-Object -ExpandProperty Name) -eq $false) {
     Write-Host 'Creating Internal-only switch named "NATSwitch" on Windows Hyper-V host...'
     New-VMSwitch -SwitchName "NATSwitch" -SwitchType Internal
-    New-NetIPAddress -IPAddress $NATIP -PrefixLength $PrefixLength -InterfaceAlias "vEthernet (NATSwitch)"
+    New-NetIPAddress -IPAddress $NATIP -PrefixLength $PrefixLength -InterfaceAlias "NATSwitch"
     New-NetNAT -Name "NATNetwork" -InternalIPInterfaceAddressPrefix $NATIPPrefix
 }
 else {
@@ -31,5 +31,5 @@ If ($NATIPPrefix -in (Get-NetNAT | Select-Object -ExpandProperty InternalIPInter
 else {
     Write-Host $NATIPPrefix 'for static IP configuration already registered; skipping'
 }
-Get-VM $VirtualMachine | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName "NATSwitch"
+Get-VM $VM | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName "NATSwitch"
 Write-Host 'Connected to NATSwitch'
