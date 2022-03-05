@@ -8,7 +8,7 @@ $NATIP=$ExtractIP + '.1'
 If ("NATSwitch" -in (Get-VMSwitch | Select-Object -ExpandProperty Name) -eq $false) {
     Write-Host 'Creating Internal-only switch named "NATSwitch" on Windows Hyper-V host...'
     New-VMSwitch -SwitchName "NATSwitch" -SwitchType Internal
-    New-NetIPAddress -IPAddress $NATIP -PrefixLength $PrefixLength -InterfaceAlias "vEthernet (NATSwitch)"
+    New-NetIPAddress -IPAddress $NATIP -PrefixLength $PrefixLength -InterfaceAlias "NATSwitch"
     New-NetNAT -Name "NATNetwork" -InternalIPInterfaceAddressPrefix $NATIPPrefix
 }
 else {
