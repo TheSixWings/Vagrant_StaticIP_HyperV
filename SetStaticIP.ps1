@@ -1,4 +1,4 @@
-param($VM, $Sleep=150, $User="vagrant", $Password="vagrant", $IP, $DNS="default", $DNS2="8.8.8.8", $Prefix="24", $Eth="Ethernet")
+param($VM, $Sleep=150, $User="vagrant", $Password="vagrant", $IP, $DNS="default", $DNS2="8.8.8.8", $Prefix="24", $Eth="Ethernet", $vSwitch="vSwitch")
 $Password=ConvertTo-SecureString $Password -AsPlainText -Force
 $Cred=New-Object System.Management.Automation.PSCredential($User,$Password)
 $ExtractIP=$IP.Split(".")[0] + "." + $IP.Split(".")[1] + "." + $IP.Split(".")[2]
@@ -17,3 +17,5 @@ Invoke-Command -Session $Session -ArgumentList $Eth, $IP, $Prefix, $Gateway, $DN
 }
 Remove-PSSession -Session $Session
 Write-Host "Connection ends"
+Get-VM $VM | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName $vSwitch
+Write-Host "Move to vSwitch: $vSwitch"

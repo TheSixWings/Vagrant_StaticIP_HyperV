@@ -22,11 +22,11 @@ Vagrant.configure("2") do |config|
       h.linked_clone = true
     end
     u.vm.hostname = HOSTNAME
-    u.vm.provision "shell", inline: "echo Reboot VM to apply Static IP"
+    u.vm.provision "shell", inline: "echo Reboot_VM_to_apply_Static_IP"
     u.vm.provision "shell", reboot: true
     u.vm.provision "ansible" do |a|
       a.verbose = "v"
-      a.playbook = "playbook.yml"
+      a.playbook = "testbook.yml"
     end
   end
   #HyperV Triggers
@@ -59,7 +59,6 @@ Vagrant.configure("2") do |config|
   config.trigger.after :'VagrantPlugins::HyperV::Action::WaitForIPAddress', type: :action do |t|
     t.info = "Trigger Fired: After-WaitForIPAddress"
     t.only_on = /-WIN$/
-    t.run = {inline: "Powershell.exe ./SetStaticIP.ps1 -VM " + HOSTNAME + " -IP " + StaticIP +
-                      "; Powershell.exe ./Configure-WinRM.ps1"}
+    t.run = {inline: "Powershell.exe ./SetStaticIP.ps1 -VM " + HOSTNAME + " -IP " + StaticIP + " -vSwitch " + SWITCH}
   end
 end
