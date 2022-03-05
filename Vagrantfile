@@ -5,7 +5,7 @@
 #define
 HOSTNAME = "Server01-WIN" #Windows: -WIN /Linux: -LNX
 StaticIP = "192.168.30.4"
-BOX = "gusztavvargadr/windows-10"
+BOX = "gusztavvargadr/windows-server"
 SWITCH = "vSwitch"
 
 Vagrant.configure("2") do |config|
@@ -59,6 +59,7 @@ Vagrant.configure("2") do |config|
   config.trigger.after :'VagrantPlugins::HyperV::Action::WaitForIPAddress', type: :action do |t|
     t.info = "Trigger Fired: After-WaitForIPAddress"
     t.only_on = /-WIN$/
-    t.run = {inline: "Powershell.exe ./SetStaticIP.ps1 -VM " + HOSTNAME + " -IP " + StaticIP}
+    t.run = {inline: "Powershell.exe ./SetStaticIP.ps1 -VM " + HOSTNAME + " -IP " + StaticIP +
+                      "; Powershell.exe ./Configure-WinRM.ps1"}
   end
 end

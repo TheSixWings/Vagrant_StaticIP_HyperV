@@ -1,4 +1,4 @@
-param($VM, $Sleep=180, $User="vagrant", $Password="vagrant", $IP, $DNS="default", $DNS2="8.8.8.8", $Prefix="24", $Eth="Ethernet")
+param($VM, $Sleep=150, $User="vagrant", $Password="vagrant", $IP, $DNS="default", $DNS2="8.8.8.8", $Prefix="24", $Eth="Ethernet")
 $Password=ConvertTo-SecureString $Password -AsPlainText -Force
 $Cred=New-Object System.Management.Automation.PSCredential($User,$Password)
 $ExtractIP=$IP.Split(".")[0] + "." + $IP.Split(".")[1] + "." + $IP.Split(".")[2]
