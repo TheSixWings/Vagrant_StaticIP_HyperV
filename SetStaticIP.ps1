@@ -19,3 +19,9 @@ Remove-PSSession -Session $Session
 Write-Host "Connection ends"
 Get-VM $VM | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName $vSwitch
 Write-Host "Move to vSwitch: $vSwitch"
+$Session=New-PSSession -VMName $VM -Credential $Cred
+Invoke-Command -Session $Session -ScriptBlock {
+    Enable-NetAdapterRdma
+}
+Remove-PSSession -Session $Session
+Write-Host "RDMA Enabled"
