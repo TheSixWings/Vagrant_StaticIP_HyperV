@@ -1,7 +1,0 @@
----
-  - name: vagrant
-    hosts: all
-    tasks:
-      - name: Check Date with Shell command
-        shell:
-          "date"
