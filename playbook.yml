@@ -1,6 +1,0 @@
----
-  - name: vagrant
-    hosts: all
-    tasks:
-      - name: Sample Windows command
-        win_command: whoami.exe
