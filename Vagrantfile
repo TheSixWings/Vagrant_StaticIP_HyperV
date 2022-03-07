@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     u.vm.provision "shell", reboot: true
     u.vm.provision "ansible" do |a|
       a.verbose = "v"
-      a.playbook = "testbook.yml"
+      a.playbook = "playbook.yml"
     end
   end
   #HyperV Triggers
