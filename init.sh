@@ -1,19 +1,21 @@
 #!/bin/sh
 #Place to D:\Vagrant\
-#Example: bash init.sh -n Java-TEST-WIN -i 192.168.30.3 -b gusztavvargadr/windows-server -a 'D:\Ansible'
+#Example: bash init.sh -n Java-TEST-WIN -i 192.168.30.3 -b gusztavvargadr/windows-server -a 'D:\Ansible' -v '/mnt/d/vagrant'
 ## defaults
 name="Server01-TEST-WIN"
 ip="192.168.30.4"
 box="gusztavvargadr/windows-server"
-ansible="D:\\Ansible"
+ansible="D:\Ansible"
+vagrant="/mnt/d/vagrant"
 
-while getopts "n:i:b:a:" opt
+while getopts "n:i:b:a:v:" opt
 do
   case $opt in
     n) name="$OPTARG";;
     i) ip="$OPTARG";;
     b) box="$OPTARG";;
     a) ansible="$OPTARG";;
+    v) vagrant="$OPTARG";;
     \?) echo "Invalid option -$OPTARG" >&2;;
   esac
 done
@@ -30,8 +32,9 @@ sed -i 's/HOSTNAME = \"Server01-TEST-WIN\"/HOSTNAME = \"'$name'\"/' $name/Vagran
 sed -i 's/StaticIP = \"192.168.30.4\"/StaticIP = \"'$ip'\"/' $name/Vagrantfile
 sed -i 's/BOX = \"gusztavvargadr\/windows-server\"/BOX = \"'$box'\"/' $name/Vagrantfile
 sed -i 's/Ansible = \"D:\\\\Ansible\"/Ansible = \"'$ansible'\"/' $name/Vagrantfile
-mv ~/$name /mnt/d/vagrant/$name
-rm -r -f ~/$name
+mv ~/$name $vagrant/$name
+rm -rf $vagrant/$name/.git*
+rm -rf ~/$name
 echo ''
 echo ''
 echo '-------------------------------'
