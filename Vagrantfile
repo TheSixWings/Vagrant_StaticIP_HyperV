@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
   config.trigger.after :up, :reload, :provision do |t|
     t.info = "Trigger Fired: After-Up,Reload"
     t.run = {inline: "Powershell.exe 'Get-VM " + HOSTNAME + " | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName " + SWITCH + "'" +
-                      "; Powershell.exe 'Remove-Item .\playbook.yml'"}
+                      "; Powershell.exe 'Remove-Item playbook.yml'"}
   end
   #Ansible Triggers
   config.trigger.before :up, :reload, :provision do |t|
