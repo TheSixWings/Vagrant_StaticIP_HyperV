@@ -34,6 +34,7 @@ sed -i 's/BOX = \"gusztavvargadr\/windows-server\"/BOX = \"'$box'\"/' $name/Vagr
 sed -i 's/Ansible = \"D:\\\\Ansible\"/Ansible = \"'$ansible'\"/' $name/Vagrantfile
 mv ~/$name $vagrant/$name
 rm -rf $vagrant/$name/.git*
+rm -r $vagrant/$name/init.sh
 rm -rf ~/$name
 echo ''
 echo ''
