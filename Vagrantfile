@@ -7,7 +7,7 @@ HOSTNAME = "Server01-TEST-WIN" #Windows: -WIN /Linux: -LNX
 StaticIP = "192.168.30.4"
 BOX = "gusztavvargadr/windows-server"
 SWITCH = "vSwitch"
-Ansible = "D:\Ansible"
+Ansible = "D:\\Ansible"
 
 Vagrant.configure("2") do |config|
   config.vm.define HOSTNAME do |u|
