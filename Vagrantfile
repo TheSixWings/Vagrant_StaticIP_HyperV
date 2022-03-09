@@ -3,7 +3,7 @@
 #At boot, change to NATSwitch, configure IP within the guest OS, restart and then change back to Virtual Switch.
 
 #define
-HOSTNAME = "Server01-TEST-WIN" #Windows: -WIN /Linux: -LNX
+HOSTNAME = "Server01-TEST-WIN" #Windows: -WIN / Linux: -LNX
 StaticIP = "192.168.30.4"
 BOX = "gusztavvargadr/windows-server"
 SWITCH = "vSwitch"
@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
   #Ansible Triggers
   config.trigger.before :up, :reload, :provision do |t|
     t.info = "Trigger Fired: Before-Up,Reload,Provision"
-    t.run = {inline: "Powershell.exe ./PreparePlaybook.ps1 -VM " + HOSTNAME + " -Ansible " + Ansible}
+    t.run = {inline: "Powershell.exe ./PreparePlaybook.ps1 -VM " + HOSTNAME + " -Ansible '" + Ansible + "'"}
   end
   #Linux Triggers
   config.trigger.before :reload, :halt, :provision do |t|

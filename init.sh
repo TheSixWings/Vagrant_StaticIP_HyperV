@@ -1,6 +1,6 @@
 #!/bin/sh
 #Place to D:\Vagrant\
-#Example: bash init.sh -n Java-TEST-WIN -i 192.168.30.3
+#Example: bash init.sh -n Java-TEST-WIN -i 192.168.30.3 -b gusztavvargadr/windows-server -a 'D:\Ansible'
 ## defaults
 name="Server01-TEST-WIN"
 ip="192.168.30.4"
@@ -25,7 +25,7 @@ echo 'Rename to '$name
 mv Vagrant_StaticIP_HyperV $name
 echo 'Modify Vagrantfile'
 box=$(echo $box | sed 's/\//\\\//')
-ansible=$(echo $ansible | sed 's/\\\\/\\\\\\\\/')
+ansible=$(echo $ansible | sed 's/\\/\\\\\\\\/')
 sed -i 's/HOSTNAME = \"Server01-TEST-WIN\"/HOSTNAME = \"'$name'\"/' $name/Vagrantfile
 sed -i 's/StaticIP = \"192.168.30.4\"/StaticIP = \"'$ip'\"/' $name/Vagrantfile
 sed -i 's/BOX = \"gusztavvargadr\/windows-server\"/BOX = \"'$box'\"/' $name/Vagrantfile
