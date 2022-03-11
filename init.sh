@@ -18,7 +18,7 @@ do
     b) box="$OPTARG" ;;
     a) ansible="$OPTARG" ;;
     v) vagrant="$OPTARG" ;;
-    c) cpu="$OPTARG" ;;
+    c) cpus="$OPTARG" ;;
     m) memory="$OPTARG" ;;
     \?) echo "Invalid option -"$OPTARG >&2; exit 1;;
   esac
@@ -39,7 +39,7 @@ sed -i 's/HOSTNAME = \"Server01-TEST-WIN\"/HOSTNAME = \"'$name'\"/' $name/Vagran
 sed -i 's/StaticIP = \"192.168.30.4\"/StaticIP = \"'$ip'\"/' $name/Vagrantfile
 sed -i 's/BOX = \"gusztavvargadr\/windows-server\"/BOX = \"'$box'\"/' $name/Vagrantfile
 sed -i 's/Ansible = \"D:\\\\Ansible\"/Ansible = \"'$ansible'\"/' $name/Vagrantfile
-sed -i 's/h.cpus = 2/h.cpus = '$cpu'/' $name/Vagrantfile
+sed -i 's/h.cpus = 2/h.cpus = '$cpus'/' $name/Vagrantfile
 sed -i 's/h.memory = 4096/h.memory = '$memory'/' $name/Vagrantfile
 echo 'Move to '$vagrant
 mv ~/$name $vagrant/$name
@@ -59,7 +59,7 @@ echo ''
 echo ''
 echo '-------------------------------'
 echo 'Vagrant box: '$(tput setaf 3)$name$(tput setaf 2)
-echo 'CPU = '$(tput setaf 3)$cpu$(tput setaf 2)', Memory = '$(tput setaf 3)$memory$(tput setaf 2)
+echo 'CPU = '$(tput setaf 3)$cpus$(tput setaf 2)', Memory = '$(tput setaf 3)$memory$(tput setaf 2)
 echo 'Initialization Complete'
 echo 'To start, try:'$(tput setaf 7)
 echo '  $cd '$name'; vagrant up'$(tput setaf 2)

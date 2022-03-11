@@ -1,4 +1,4 @@
-#For running Vagrant in WSL2 with Hyper-V as the provider
+#For running Vagrant in WSL2 with Hyper-V as the provider, with SR-IOV and RDMA VF support.
 #Vagrantfile that supports to setup a static IP for Hyper-V VM.
 #At boot, change to NATSwitch, configure IP within the guest OS, restart and then change back to Virtual Switch.
 
