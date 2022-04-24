@@ -1,6 +1,5 @@
 #!/bin/sh
 #Place this file to D:\Vagrant\
-#Example: bash init.sh -n Java-TEST-WIN -i 192.168.30.3 -b gusztavvargadr/windows-server -a 'D:\Ansible' -v '/mnt/d/vagrant' -c 4 -m 8192
 ## defaults
 name="Server01-TEST-WIN"
 ip="192.168.30.4"
@@ -9,6 +8,7 @@ ansible="D:\Ansible"
 vagrant="/mnt/d/vagrant"
 cpus=2
 memory=4096
+example="Example: ./init.sh -n Java-TEST-WIN -i 192.168.30.3 -b gusztavvargadr/windows-server -a 'D:\Ansible' -v '/mnt/d/vagrant' -c 4 -m 8192"
 
 while getopts ":n:i:b:a:v:c:m:" opt
 do
@@ -23,6 +23,8 @@ do
     \?) echo "Invalid option -"$OPTARG >&2; exit 1;;
   esac
 done
+if [ $OPTIND -eq 1 ]; then echo $example && exit 1; fi
+
 #set window size
 lines="$(stty size | cut -d ' ' -f 1)"
 printf '\033[8;%d;150t' $lines

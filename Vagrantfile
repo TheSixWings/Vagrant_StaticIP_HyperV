@@ -63,4 +63,10 @@ Vagrant.configure("2") do |config|
     t.only_on = /-WIN$/
     t.run = {inline: "Powershell.exe ./SetStaticIP.ps1 -VM " + HOSTNAME + " -IP " + StaticIP + " -vSwitch " + SWITCH}
   end
+  #Destroy Triggers
+  config.trigger.before :destroy do |t|
+    t.info = "Destroy Prevention: halt instead"
+    t.only_on = /-WIN$/
+    t.run_remote = {inline: "shutdown /s /t 0; Start-Sleep 60000; echo Destroy Prevented"}
+  end
 end
