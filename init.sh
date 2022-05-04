@@ -6,11 +6,12 @@ ip="192.168.30.4"
 box="gusztavvargadr/windows-server"
 ansible="D:\Ansible"
 vagrant="/mnt/d/vagrant"
+sriov="true"
 cpus=2
 memory=4096
-example="Example: ./init.sh -n Java-TEST-WIN -i 192.168.30.3 -b gusztavvargadr/windows-server -a 'D:\Ansible' -v '/mnt/d/vagrant' -c 4 -m 8192"
+example="Example: ./init.sh -n Java-TEST-WIN -i 192.168.30.3 -b gusztavvargadr/windows-server -a 'D:\Ansible' -v '/mnt/d/vagrant' -c 4 -m 8192 -s true"
 
-while getopts ":n:i:b:a:v:c:m:" opt
+while getopts ":n:i:b:a:v:c:m:s:" opt
 do
   case $opt in
     n) name="$OPTARG" ;;
@@ -20,6 +21,7 @@ do
     v) vagrant="$OPTARG" ;;
     c) cpus="$OPTARG" ;;
     m) memory="$OPTARG" ;;
+    s) sriov="$OPTARG" ;;
     \?) echo "Invalid option -"$OPTARG >&2; exit 1;;
   esac
 done
@@ -43,6 +45,7 @@ sed -i 's/BOX = \"gusztavvargadr\/windows-server\"/BOX = \"'$box'\"/' $name/Vagr
 sed -i 's/Ansible = \"D:\\\\Ansible\"/Ansible = \"'$ansible'\"/' $name/Vagrantfile
 sed -i 's/h.cpus = 2/h.cpus = '$cpus'/' $name/Vagrantfile
 sed -i 's/h.memory = 4096/h.memory = '$memory'/' $name/Vagrantfile
+sed -i 's/SRIOV = \"true\"/SRIOV = \"'$sriov'\"/' $name/Vagrantfile
 echo 'Move to '$vagrant
 mv ~/$name $vagrant/$name
 #remove error

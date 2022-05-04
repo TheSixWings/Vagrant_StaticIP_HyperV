@@ -3,7 +3,7 @@ $Password=ConvertTo-SecureString $Password -AsPlainText -Force
 $Cred=New-Object System.Management.Automation.PSCredential($User,$Password)
 $ExtractIP=$IP.Split(".")[0] + "." + $IP.Split(".")[1] + "." + $IP.Split(".")[2]
 $Gateway=$ExtractIP + '.1'
-If ($DNS -eq "default") {
+if ($DNS -eq "default") {
    $DNS=$Gateway 
 }
 Write-Host "Sleep $Sleep seconds before connect"
