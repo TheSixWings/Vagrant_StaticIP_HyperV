@@ -24,4 +24,4 @@ Invoke-Command -Session $Session -ScriptBlock {
     Enable-NetAdapterRdma
 }
 Remove-PSSession -Session $Session
-Write-Host "RDMA Enabled"
+Write-Host "RDMA Prepared"
