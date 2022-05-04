@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
   #HyperV Triggers
   config.trigger.before :'VagrantPlugins::HyperV::Action::StartInstance', type: :action do |t|
     t.info = "Trigger Fired: Before-StartInstance"
-    t.run = {inline: "Powershell.exe ./EnableSRIOV.ps1 -VM " + HOSTNAME + " -Enabled " + SRIOV +
+    t.run = {inline: "Powershell.exe ./EnableSRIOV.ps1 -VM " + HOSTNAME + " -Enabled $" + SRIOV +
                      "; Powershell.exe ./NATSwitch.ps1 -VM " + HOSTNAME + " -IP " + StaticIP}
   end
   config.trigger.after :up, :reload, :provision do |t|
