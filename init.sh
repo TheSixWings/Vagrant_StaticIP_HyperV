@@ -64,7 +64,7 @@ echo ''
 echo ''
 echo '-------------------------------'
 echo 'Vagrant box: '$(tput setaf 3)$name$(tput setaf 2)
-echo 'CPU = '$(tput setaf 3)$cpus$(tput setaf 2)', Memory = '$(tput setaf 3)$memory$(tput setaf 2)
+echo 'CPU = '$(tput setaf 3)$cpus$(tput setaf 2)', Memory = '$(tput setaf 3)$memory$(tput setaf 2)', SRIOV = '$(tput setaf 3)$sriov$(tput setaf 2)
 echo 'Initialization Complete'
 echo 'To start, try:'$(tput setaf 7)
 echo '  $cd '$name'; vagrant up'$(tput setaf 2)
